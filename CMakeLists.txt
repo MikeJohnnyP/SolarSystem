@@ -14,3 +14,4 @@ project ("SolarSystem")
 # Include sub-projects.
 add_subdirectory("SolarEngine")
 add_subdirectory("Sandbox")
+add_subdirectory("Vendors/glfw")
