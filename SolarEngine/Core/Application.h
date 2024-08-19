@@ -19,6 +19,7 @@ namespace Solar
         void PushOverlay(Layer* overlay);
         void PopLayer(Layer* layer);
         void PopOverlay(Layer* overlay);
+        inline InputState* GetInputState() { return m_inputState; }
         Window *GetWindow();
         static Application* GetInstance();
         virtual bool ClientInit() = 0;
@@ -34,7 +35,7 @@ namespace Solar
         static Application* s_instance;
         Window* m_window;
         WindowSpec m_spec;
-        InputState* m_inputState; 
+        InputState *m_inputState; 
         LayerStack m_LayerStack;
     };
     Application* createApplication();

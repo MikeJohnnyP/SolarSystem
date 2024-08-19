@@ -9,6 +9,8 @@
 #include "Core/Event/KeyboardEvent.h"
 #include "Core/Event/MouseEvent.h"
 
+#define Input Solar::Application::GetInstance()->GetInputState()
+
 
 //_______Entry Point_______
 #include "EntryPoint.h"

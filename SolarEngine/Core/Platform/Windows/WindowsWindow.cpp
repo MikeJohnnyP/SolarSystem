@@ -91,11 +91,32 @@ namespace Solar
             data.callback(e);
         });
 
+        static bool firstStart = true;
         glfwSetCursorPosCallback(m_GLFWwindow, [](GLFWwindow* window, double xpos, double ypos)
         {
             WindowData &data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+            static double LastFrameX;
+            static double LastFrameY;
+
+            if(firstStart)
+            {
+                LastFrameX = xpos;
+                LastFrameX = ypos;
+                firstStart = false;
+            }
+
+            double offsetX = xpos - LastFrameX;
+            double offsetY = ypos - LastFrameY;
+
+            data.inputState.Mouse->SetOffset((float)offsetX, (float)offsetY);
+            data.inputState.Mouse->SetPosition((float)xpos, (float)ypos);
+
             MouseMoved e((float)xpos, (float)ypos);
             data.callback(e);
+
+            LastFrameX = xpos;
+            LastFrameY = ypos;
             
         });
 
@@ -150,6 +171,7 @@ namespace Solar
         glfwSetScrollCallback(m_GLFWwindow, [](GLFWwindow* window, double xoffset, double yoffset)
         {
             WindowData &data = *(WindowData*)glfwGetWindowUserPointer(window);
+            data.inputState.Mouse->SetScroll((float)xoffset, (float)yoffset);
             MouseScroll e((float)xoffset, (float)yoffset);
             data.callback(e);
         });

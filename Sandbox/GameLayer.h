@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Solar.h"
+#include "pch.h"
 
 class GameLayer : public Solar::Layer
 {
@@ -14,6 +15,7 @@ public:
 
     virtual void OnEvent(Solar::Event& event) override
     {
+        std::cout << "Mouse offset: " << Input->Mouse->GetOffsetX() << ", " << Input->Mouse->GetOffsetY() << std::endl; 
         Solar::EventDispatcher dispatcher(event);
         dispatcher.Dispatcher<Solar::MouseButtonPressed>(std::bind(&GameLayer::OnMousePressed, this, std::placeholders::_1));
     }
