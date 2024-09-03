@@ -1,5 +1,6 @@
 #pragma once 
 #include "pch.h"
+#include "Core/TimeSteps.h"
 #include "Core/Event/Event.h"
 
 namespace Solar
@@ -10,7 +11,7 @@ namespace Solar
         virtual ~Layer();
         virtual void OnAttach() {}
         virtual void OnDettach() {}
-        virtual void OnUpdate() {}
+        virtual void OnUpdate(TimeSteps& ts) {}
         virtual void OnEvent(Event &event) {}
 
     protected:

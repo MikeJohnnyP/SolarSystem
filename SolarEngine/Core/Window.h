@@ -26,6 +26,8 @@ namespace Solar
         virtual bool IsVsyncEnable() = 0;
         virtual void SetFunctionCallback(const EventFn& callback) = 0;
         virtual void* GetNativeWindow() = 0;
+        virtual float GetTime() = 0;
+        virtual float GetTimeMiliSeconds() = 0;
         virtual InputState* GetInputState() = 0;
     protected:
         Window() = default;

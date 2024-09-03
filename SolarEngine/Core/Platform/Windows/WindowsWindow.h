@@ -1,4 +1,6 @@
 #include "Core/Window.h"
+#include "Core/Renderer/Shader.h"
+#include "Core/Renderer/GraphicsContext.h"
 
 struct GLFWwindow;
 namespace Solar
@@ -16,16 +18,19 @@ namespace Solar
         virtual bool IsVsyncEnable() override;
         virtual void SetFunctionCallback(const EventFn& callback) override;
         virtual void* GetNativeWindow() override;
+        virtual float GetTime() override;
+        virtual float GetTimeMiliSeconds() override;
         virtual InputState* GetInputState() override;
     protected:
 
     private:
         GLFWwindow* m_GLFWwindow;
+        GraphicsContext* m_context; 
 
         struct WindowData
         {
             unsigned int width, height;
-            const char* Title;
+            std::string Title;
             bool vSync;
             InputState inputState;
             EventFn callback;

@@ -6,11 +6,10 @@
 class SandBox : public Solar::Application
 {
 public:
-    SandBox() : m_GameLayer(new GameLayer("Game Layer")), m_UILayer(new UILayer("UI Layer")) {}
+    SandBox() : m_GameLayer(new GameLayer("Game Layer")) {}
     bool ClientInit() override 
     {
         PushLayer(m_GameLayer);
-        PushOverlay(m_UILayer);
         return true;
     }
 
@@ -20,7 +19,6 @@ public:
     }
 private:
     GameLayer *m_GameLayer;
-    UILayer *m_UILayer;
 };
 
 Solar::Application* Solar::createApplication()
@@ -32,8 +30,8 @@ Solar::Application* Solar::createApplication()
 Solar::WindowSpec Solar::createSpec()
 {
     Solar::WindowSpec spec;
-    spec.width = 640;
-    spec.height = 480;
+    spec.width = 1280;
+    spec.height = 720;
     spec.Title = "My window";
     spec.Vsync = true;
     return spec;

@@ -76,4 +76,5 @@ namespace Solar
     {
         return glfwGetMouseButton(window, keyCode) == GLFW_RELEASE; 
     }
-}
+
+} 

@@ -2,7 +2,9 @@
 #include "Input.h"
 #include "Application.h"
 #include "Logger/Logger.h"
-#include <GLFW/glfw3.h>
+#include "Core/TimeSteps.h"
+#include "Core/Renderer/Renderer.h"
+#include <glad/glad.h>
 
 namespace Solar 
 {
@@ -24,22 +26,41 @@ namespace Solar
             return false;
         }
         ClientInit();
-        m_window->SetFunctionCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+        m_window->SetFunctionCallback(SOLAR_EVENT_BIND(Application::OnEvent));
+        m_isWindowClose = m_window->IsWindowClose();
 
         m_inputState = m_window->GetInputState();
+
+        Renderer::Init();
+
+        /*
+            Hardware Info
+        */  
+        CORE_LOG_INFO("Vendor: {0}", (const char*)glGetString(GL_VENDOR));
+        CORE_LOG_INFO("Renderer: {0}", (const char*)glGetString(GL_RENDERER));
+        CORE_LOG_INFO("Version: {0}", (const char*)glGetString(GL_VERSION));
+        CORE_LOG_INFO("Shading Language: {0}", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+
         return true;
     }
 
     void Application::Run()
     {
-        while (!m_window->IsWindowClose())
+        float currentTime;
+        float lastTime = 0;
+        while (!m_isWindowClose && !m_window->IsWindowClose())
         {
+            currentTime = m_window->GetTime(); 
+            TimeSteps ts = currentTime - lastTime;
+
             m_window->SwapBuffer();
-             for(Layer* layer: m_LayerStack)
-             {
-                 layer->OnUpdate();
-             }
+            for(Layer* layer: m_LayerStack)
+            {
+                layer->OnUpdate(ts);
+            }
             m_window->PollEvent();
+
+            lastTime = currentTime;
         }
         
     }
@@ -52,6 +73,8 @@ namespace Solar
     void Application::OnEvent(Event &event)
     {
         EventDispatcher dispatcher(event);
+        dispatcher.Dispatcher<KeyPressed>(SOLAR_EVENT_BIND(Application::WindowClose));
+        dispatcher.Dispatcher<WindowResizeEvent>(SOLAR_EVENT_BIND(Application::WindowResize));
         for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
         {
             (*--it)->OnEvent(event);
@@ -97,9 +120,18 @@ namespace Solar
     Application::~Application()
     {
     }
-    bool Application::OnWindowClick(MouseButtonPressed &event)
+    bool Application::WindowClose(KeyPressed& event)
     {
-        CORE_LOG_INFO("On window cliked");
+        if(m_inputState->Keyboard->IsPressed(SOLAR_KEY_ESCAPE))
+        {
+            m_isWindowClose = true;
+        }
+        return true;
+    }
+
+    bool Application::WindowResize(WindowResizeEvent &event)
+    {
+        Renderer::Resizing(event.GetWidth(), event.GetHeight());
         return false;
     }
-}
+} 

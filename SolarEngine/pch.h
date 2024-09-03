@@ -20,6 +20,9 @@
 #include<map>
 #include<stack>
 
+#ifndef GLM_ENABLE_EXPERIMENTAL
+#define GLM_ENABLE_EXPERIMENTAL 
+#endif
 
 #if ON_SOLAR_ENGINE
     #if DYNAMIC_BUILD
@@ -50,3 +53,13 @@
 	#define SOLAR_ASSERT(x, ...)
 	#define SOLAR_CORE_ASSERT(x, ...)
 #endif
+
+#define SOLAR_EVENT_BIND(function) std::bind(&function, this, std::placeholders::_1)
+
+#define DYNAMIC_CAST(value, type) std::dynamic_pointer_cast<type>(value)
+
+namespace Solar
+{
+    template<typename T> using Ref = std::shared_ptr<T>;
+    template<typename T> using Scope = std::unique_ptr<T>;
+}

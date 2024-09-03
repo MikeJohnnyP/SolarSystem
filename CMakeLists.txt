@@ -11,7 +11,15 @@ endif()
 
 project ("SolarSystem")
 
+# GLFW (window creation and input)
+set(GLFW_BUILD_EXAMPLES OFF)
+set(GLFW_BUILD_TESTS OFF)
+set(GLFW_BUILD_DOCS OFF)
+set(GLFW_INSTALL OFF)
+
+
 # Include sub-projects.
 add_subdirectory("SolarEngine")
 add_subdirectory("Sandbox")
 add_subdirectory("Vendors/glfw")
+add_subdirectory("Vendors/glm")

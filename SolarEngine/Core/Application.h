@@ -5,6 +5,7 @@
 #include "Event/MouseEvent.h"
 #include "Event/ApplicationEvent.h"
 #include "Layer/LayerStack.h"
+#include <memory>
 
 namespace Solar
 {
@@ -19,6 +20,7 @@ namespace Solar
         void PushOverlay(Layer* overlay);
         void PopLayer(Layer* layer);
         void PopOverlay(Layer* overlay);
+        inline float GetTime() const { return m_window->GetTime(); }
         inline InputState* GetInputState() { return m_inputState; }
         Window *GetWindow();
         static Application* GetInstance();
@@ -30,8 +32,10 @@ namespace Solar
         Application(const Application& other) = delete;
         Application(const Application&& other) = delete;
     private:
-        bool OnWindowClick(MouseButtonPressed& event);
+        bool WindowClose(KeyPressed& event);
+        bool WindowResize(WindowResizeEvent& event);
     private:
+        bool m_isWindowClose;
         static Application* s_instance;
         Window* m_window;
         WindowSpec m_spec;

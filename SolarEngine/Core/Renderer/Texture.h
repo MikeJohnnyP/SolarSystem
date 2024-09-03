@@ -1,0 +1,26 @@
+#pragma once
+
+#include "pch.h"
+
+namespace Solar
+{
+    class SOLAR_API Texture
+    {
+    public:
+        virtual ~Texture() = default;
+
+        virtual void Bind(uint32_t slot = 0) const = 0;
+        virtual void Unbind() const = 0;
+        virtual int32_t GetWidth() = 0;
+        virtual int32_t GetHeight() = 0;
+        virtual int32_t GetChannels() = 0;
+    private:
+    };
+    
+    class Texture2D : public Texture
+    {
+    public:
+        static Ref<Texture2D> Create(const std::string& filePath); 
+    private:
+    };
+}
