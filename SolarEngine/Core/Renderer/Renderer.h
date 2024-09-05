@@ -16,6 +16,7 @@ namespace Solar
     {
     public:
         static void Init();
+        static void Shutdown();
         static void Resizing(uint32_t width, uint32_t height);
         static void BeginScene(const Camera& camera,const std::initializer_list<Ref<Shader>>& shader);
         static void EndScene();

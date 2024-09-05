@@ -16,9 +16,10 @@ namespace Solar
         Ref<Shader> shader2D;
     };
 
-    static Renderer2DStorage rendererData;
+    static Renderer2DStorage* rendererData;
     void Renderer2D::Init()
     {
+        rendererData = new Renderer2DStorage();
         float data[] = {
             -0.5f,   0.5f ,   0.0f, 0.0f, 1.0f, // top left
             0.5f ,   0.5f ,   0.0f, 1.0f, 1.0f,  // top right
@@ -32,19 +33,27 @@ namespace Solar
         uint32_t indicies[] = {0, 1, 2, 2, 3, 1};
         Ref<IndexBuffer> m_EBO = IndexBuffer::create(indicies, sizeof(indicies));
         
-        rendererData.VAO = VertexArray::Create();
-        rendererData.VAO->AddVertexBuffer(m_VBO);
-        rendererData.VAO->SetIndexBuffer(m_EBO);
+        rendererData->VAO = VertexArray::Create();
+        rendererData->VAO->AddVertexBuffer(m_VBO);
+        rendererData->VAO->SetIndexBuffer(m_EBO);
 
-        rendererData.shader2D = Shader::create("Shader",
+        rendererData->shader2D = Shader::create("Shader",
                                                 "../../../../../SolarEngine/Core/DefaultShader/Vertex.glsl",
                                                 "../../../../../SolarEngine/Core/DefaultShader/Fragment.glsl");
-        rendererData.shader2D->Bind();
-        rendererData.shader2D->SetInt("u_Texture", 0);
+        rendererData->shader2D->Bind();
+        rendererData->shader2D->SetInt("u_Texture", 0);
 
-        rendererData.whiteTexture = Texture2D::Create(1, 1);
+        rendererData->whiteTexture = Texture2D::Create(1, 1);
         uint32_t whiteData = 0xffffffff;
-        rendererData.whiteTexture->SetData(&whiteData, sizeof(uint32_t));
+        rendererData->whiteTexture->SetData(&whiteData, sizeof(uint32_t));
+    }
+
+    void Renderer2D::Shudown()
+    {
+        rendererData->shader2D->Unbind();
+        rendererData->VAO->Unbind();
+        rendererData->whiteTexture->Unbind();
+        delete rendererData;
     }
 
     void Renderer2D::Resizing(uint32_t width, uint32_t height)
@@ -53,7 +62,7 @@ namespace Solar
     }
     void Renderer2D::BeginScene(const Camera &camera)
     {
-        rendererData.shader2D->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+        rendererData->shader2D->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
     }
     void Renderer2D::EndScene()
     {
@@ -61,18 +70,18 @@ namespace Solar
 
     void Renderer2D::DrawQuad(glm::vec3& position, glm::vec2& size, Ref<Texture2D>& texture)
     {
-        rendererData.shader2D->Bind();
-        rendererData.shader2D->SetVec4("u_Color", glm::vec4(1.0f));
+        rendererData->shader2D->Bind();
+        rendererData->shader2D->SetVec4("u_Color", glm::vec4(1.0f));
         texture->Bind();
 
-        rendererData.VAO->Bind();
+        rendererData->VAO->Bind();
 
         glm::mat4 model = glm::translate(glm::mat4(1.0f), position) * 
                           glm::scale(glm::mat4(1.0f), {size.x, size.y, 0});
 
-        rendererData.shader2D->SetMat4("u_ModelMatrix", model);
+        rendererData->shader2D->SetMat4("u_ModelMatrix", model);
 
-        RenderCommand::DrawIndexed(rendererData.VAO);    
+        RenderCommand::DrawIndexed(rendererData->VAO);    
     }
 
     void Renderer2D::DrawQuad(glm::vec2 &position, glm::vec2 &size, Ref<Texture2D> &texture)
@@ -82,18 +91,18 @@ namespace Solar
 
     void Renderer2D::DrawQuad(glm::vec3& position, glm::vec2& size, glm::vec4& color)
     {
-        rendererData.shader2D->Bind();
-        rendererData.whiteTexture->Bind();
+        rendererData->shader2D->Bind();
+        rendererData->whiteTexture->Bind();
 
-        rendererData.VAO->Bind();
+        rendererData->VAO->Bind();
 
         glm::mat4 model = glm::translate(glm::mat4(1.0f), position) * 
                           glm::scale(glm::mat4(1.0f), {size.x, size.y, 0});
 
-        rendererData.shader2D->SetMat4("u_ModelMatrix", model);
-        rendererData.shader2D->SetVec4("u_Color", color);
+        rendererData->shader2D->SetMat4("u_ModelMatrix", model);
+        rendererData->shader2D->SetVec4("u_Color", color);
 
-        RenderCommand::DrawIndexed(rendererData.VAO);
+        RenderCommand::DrawIndexed(rendererData->VAO);
     }
 
     void Renderer2D::DrawQuad(glm::vec2 &position, glm::vec2 &size, glm::vec4 &color)

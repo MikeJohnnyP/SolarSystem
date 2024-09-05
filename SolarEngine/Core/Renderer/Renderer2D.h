@@ -11,6 +11,7 @@ namespace Solar
     {
     public:
         static void Init();
+        static void Shudown();
         static void Resizing(uint32_t width, uint32_t height);
         static void BeginScene(const Camera& camera);
         static void EndScene();

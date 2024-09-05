@@ -10,6 +10,11 @@ namespace Solar
         RenderCommand::Init();
     }
 
+    void Renderer::Shutdown()
+    {
+        
+    }
+
     void Renderer::Resizing(uint32_t width, uint32_t height)
     {
         RenderCommand::ViewFrame(width, height);
