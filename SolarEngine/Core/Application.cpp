@@ -4,6 +4,7 @@
 #include "Logger/Logger.h"
 #include "Core/TimeSteps.h"
 #include "Core/Renderer/Renderer.h"
+#include "Core/Renderer/Renderer2D.h"
 #include <glad/glad.h>
 
 namespace Solar 
@@ -32,7 +33,7 @@ namespace Solar
         m_inputState = m_window->GetInputState();
 
         Renderer::Init();
-
+        Renderer2D::Init();
         /*
             Hardware Info
         */  

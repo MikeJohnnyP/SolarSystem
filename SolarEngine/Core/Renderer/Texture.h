@@ -14,6 +14,7 @@ namespace Solar
         virtual int32_t GetWidth() = 0;
         virtual int32_t GetHeight() = 0;
         virtual int32_t GetChannels() = 0;
+        virtual void SetData(void* data, uint32_t size) = 0;
     private:
     };
     
@@ -21,6 +22,7 @@ namespace Solar
     {
     public:
         static Ref<Texture2D> Create(const std::string& filePath); 
+        static Ref<Texture2D> Create(uint32_t width, uint32_t height); 
     private:
     };
 }

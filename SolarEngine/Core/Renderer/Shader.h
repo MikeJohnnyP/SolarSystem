@@ -1,5 +1,6 @@
 #pragma once
 #include "pch.h"
+#include <glm/glm.hpp>
 
 namespace Solar
 {
@@ -10,6 +11,12 @@ namespace Solar
         
         virtual void Bind() const = 0;
         virtual void Unbind() const = 0;
+
+        virtual void SetMat4(const std::string& uniformName, const glm::mat4& value) = 0; 
+        virtual void SetVec3(const std::string& uniformName, const glm::vec3& value) = 0;
+        virtual void SetVec4(const std::string& uniformName, const glm::vec4& value) = 0;
+        virtual void SetFloat(const std::string& uniformName, const float value) = 0;
+        virtual void SetInt(const std::string& uniformName, const int value) = 0;
 
         virtual std::string GetName() const = 0;
 

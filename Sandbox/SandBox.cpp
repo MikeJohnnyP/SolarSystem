@@ -1,4 +1,5 @@
 #include "Solar.h"
+#include "Layer2D.h"
 #include "GameLayer.h"
 #include "pch.h"
 
@@ -6,10 +7,12 @@
 class SandBox : public Solar::Application
 {
 public:
-    SandBox() : m_GameLayer(new GameLayer("Game Layer")) {}
+    SandBox() : m_GameLayer(new GameLayer("Game Layer")),
+                m_Layer2DLayer(new Layer2D("Layer2D")) {}
     bool ClientInit() override 
     {
-        PushLayer(m_GameLayer);
+        // PushLayer(m_GameLayer);
+        PushLayer(m_Layer2DLayer);
         return true;
     }
 
@@ -19,6 +22,7 @@ public:
     }
 private:
     GameLayer *m_GameLayer;
+    Layer2D* m_Layer2DLayer;
 };
 
 Solar::Application* Solar::createApplication()

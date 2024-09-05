@@ -4,7 +4,6 @@
 #include "pch.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "Core/Platform/OpenGL/OpenGLShader.h"
-#include "Core/OrthograhicCameraController.h"
 #include "Core/Renderer/Camera/PerspectiveCamera.h"
 
 class GameLayer : public Solar::Layer
@@ -91,7 +90,8 @@ public:
         Solar::Ref<Solar::VertexBuffer> m_CubeVBO;
         m_CubeVBO = Solar::VertexBuffer::create(cube, sizeof(cube)); 
 
-        Solar::BufferLayout cubeLayout({{Solar::ShaderDataType::Float3, "aPos"}, {Solar::ShaderDataType::Float2, "aTextureNormal"}});
+        Solar::BufferLayout cubeLayout({{Solar::ShaderDataType::Float3, "aPos"}, 
+                            {Solar::ShaderDataType::Float2, "aTextureNormal"}});
         m_CubeVBO->SetLayout(cubeLayout);
 
         m_VertexArray->AddVertexBuffer(m_CubeVBO);
@@ -101,7 +101,7 @@ public:
         m_texture2 = Solar::Texture2D::Create("../../../../../sandbox/assets/awesomeface.png"); 
 
         DYNAMIC_CAST(m_Shader, Solar::OpenGLShader)->Bind();
-        DYNAMIC_CAST(m_Shader, Solar::OpenGLShader)->UniformInt("texture1", 0);
+        DYNAMIC_CAST(m_Shader, Solar::OpenGLShader)->UniformInt("u_Texture", 0);
     }
 
     virtual void OnUpdate(Solar::TimeSteps& ts) override
@@ -110,7 +110,7 @@ public:
         Solar::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
         Solar::RenderCommand::Clear();
         Solar::Ref<Solar::Shader> getShader = m_ShaderLibarry.Get("Shader");
-        Solar::Renderer::BeginScene(m_PerspectiveCamera, {{getShader}});
+        Solar::Renderer::BeginScene(m_CameraController.GetCamera(), {{getShader}});
 
         m_texture1->Bind();        
         Solar::Renderer::Submit(m_VertexArray, getShader);

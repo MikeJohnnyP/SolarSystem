@@ -171,6 +171,12 @@ namespace Solar
         glUniform1i(location, value);
     }
 
+    void OpenGLShader::UniformVec4(const std::string &uniformName, const glm::vec4 &value)
+    {
+        int location = glGetUniformLocation(m_ProgramID, uniformName.c_str());
+        glUniform4f(location, value.r, value.g, value.b, value.a);
+    }
+
     std::string OpenGLShader::ReadFile(const std::string &filePath)
     {
         std::string result;
